@@ -27,13 +27,13 @@ resource "aws_s3_bucket_versioning" "versioning_enabled" {
   bucket = aws_s3_bucket.terraform_state_bucket.id
 
   versioning_configuration {
-    status = "enabled"
+    status = "Enabled"
   }
 }
 
 # S3 Bucket Policy
 resource "aws_s3_bucket_policy" "s3_bucket_policy" {
-  bucket = aws_s3.bucket.terraform_state_bucket.id
+  bucket = aws_s3_bucket.terraform_state_bucket.id
 
   policy = jsonencode({
     Version = "2012-10-17",
@@ -41,7 +41,7 @@ resource "aws_s3_bucket_policy" "s3_bucket_policy" {
       {
         Effect   = "Allow",
         Action   = "s3:ListBucket",
-        Resource = aws_s3.bucket.terraform_state_bucket.arn,
+        Resource = aws_s3_bucket.terraform_state_bucket.arn,
         Principal = {
           AWS = aws_iam_user.terraform_user.arn
         }
@@ -49,7 +49,7 @@ resource "aws_s3_bucket_policy" "s3_bucket_policy" {
       {
         Effect   = "Allow",
         Action   = ["s3:GetObject", "s3:PutObject"],
-        Resource = "${aws_s3.bucket.terraform_state_bucket.arn}/*",
+        Resource = "${aws_s3_bucket.terraform_state_bucket.arn}/*",
         Principal = {
           AWS = aws_iam_user.terraform_user.arn
         }
